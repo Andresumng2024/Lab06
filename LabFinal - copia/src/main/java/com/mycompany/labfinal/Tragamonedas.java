@@ -1,4 +1,3 @@
-
 package com.mycompany.labfinal;
 
 import javax.swing.*;
@@ -10,20 +9,23 @@ public class Tragamonedas extends JFrame {
     private JLabel lblRodillo1, lblRodillo2, lblRodillo3;
     private JButton btnGirar;
     private boolean enJuego = false;
+    private ImageIcon[] iconos;
 
     public Tragamonedas() {
         setTitle("Juego de Tragamonedas");
-        setSize(300, 200);
+        setSize(400, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new FlowLayout());
         setLocationRelativeTo(null);
 
-        // Inicializar los rodillos como etiquetas
-        lblRodillo1 = new JLabel("0");
-        lblRodillo2 = new JLabel("0");
-        lblRodillo3 = new JLabel("0");
-
+        // Inicializar rodillos como etiquetas de imagen
+        lblRodillo1 = new JLabel();
+        lblRodillo2 = new JLabel();
+        lblRodillo3 = new JLabel();
         btnGirar = new JButton("Girar");
+
+        // Cargar las imágenes de los iconos en un arreglo
+        cargarIconos();
 
         // Acción para el botón de girar
         btnGirar.addActionListener(new ActionListener() {
@@ -42,6 +44,16 @@ public class Tragamonedas extends JFrame {
         add(btnGirar);
 
         setVisible(true);
+    }
+
+    private void cargarIconos() {
+        // Ruta donde están las imágenes
+        iconos = new ImageIcon[5];
+        iconos[0] = new ImageIcon("src/main/java/com/mycompany/labfinal/resources/cereza.png");
+        iconos[1] = new ImageIcon("src/main/java/com/mycompany/labfinal/resources/manzana.png");
+        iconos[2] = new ImageIcon("src/main/java/com/mycompany/labfinal/resources/limon.png");
+        iconos[3] = new ImageIcon("src/main/java/com/mycompany/labfinal/resources/sandia.png");
+        iconos[4] = new ImageIcon("src/main/java/com/mycompany/labfinal/resources/mora.png");
     }
 
     private void iniciarGiros() {
@@ -70,15 +82,15 @@ public class Tragamonedas extends JFrame {
     // Clase interna para cada rodillo
     private class Rodillo implements Runnable {
         private JLabel label;
-        
+
         public Rodillo(JLabel label) {
             this.label = label;
         }
-        
+
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {
-                int numero = (int) (Math.random() * 10); // Número entre 0 y 9
-                label.setText(String.valueOf(numero));
+                int indice = (int) (Math.random() * iconos.length); // Selecciona un icono aleatorio
+                label.setIcon(iconos[indice]);
                 
                 try {
                     Thread.sleep(100); // Velocidad de giro
